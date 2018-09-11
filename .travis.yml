@@ -32,3 +32,23 @@ deploy:
   on:
     repo: songintae/kooboot2
     branch: master
+
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: kooboot-deploy
+  key: kooboot.zip
+  bundle_type: zip
+  application: kooboot-deploy-agent
+  deployment-group: kooboot-deploy-group
+  region: ap-northeast-2
+    on:
+    repo: songintae/kooboot2
+    branch: master
+
+notifications:
+  email:
+    recipients:
+      - kookooku92@gmail.com
+    on_success: never
+    on_failure: always
