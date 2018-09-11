@@ -12,3 +12,23 @@ cache:
   - '$HOME/.gradle'
 
 script: "./gradlew clean build"
+
+
+before_deploy:
+  - zip -r kooboot *
+  - mkdir -p deploy
+  - mv kooboot.zip deploy/kooboot.zip
+
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: kooboot-deploy
+  region: ap-northeast-2
+  skip_cleanup: true
+  acl: public_read_write
+  local_dir: deploy
+  wait-until-deployed: true
+  on:
+    repo: songintae/kooboot2
+    branch: master
