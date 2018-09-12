@@ -38,7 +38,7 @@ deploy:
   key: kooboot.zip
   bundle_type: zip
   application: kooboot-deploy-agent
-  deployment_group: ooboot-deploy-group
+  deployment_group: kooboot-deploy-group
   region: ap-northeast-2
   wait-until-deployed: true
   on:
