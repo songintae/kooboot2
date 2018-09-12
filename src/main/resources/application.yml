@@ -36,7 +36,7 @@ logging:
 spring:
   profiles: prod
 
-  flyway: true
+  flyway: false
 
   jpa:
     hibernate:
@@ -46,9 +46,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: ${db.url}
-    username: ${db.username}
-    password: ${db.password}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 logging:
   level:
