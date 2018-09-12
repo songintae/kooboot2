@@ -46,4 +46,11 @@ public class KeyboardTest {
         keyBoard.removeButton("없는경우");
     }
 
+
+    @Test
+    public void isExistsButton() {
+        assertThat(keyBoard.isExistsButton("번역")).isEqualTo(true);
+        assertThat(keyBoard.isExistsButton("없음")).isEqualTo(false);
+    }
+
 }
