@@ -1,0 +1,54 @@
+language: java
+jdk:
+  - openjdk8
+
+branches:
+  only:
+  - master
+
+cache:
+  directories:
+  - '$HOME/.m2/repository'
+  - '$HOME/.gradle'
+
+script: "./gradlew clean build"
+
+
+before_deploy:
+  - zip -r kooboot *
+  - mkdir -p deploy
+  - mv kooboot.zip deploy/kooboot.zip
+
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: kooboot-deploy
+  region: ap-northeast-2
+  skip_cleanup: true
+  acl: public_read_write
+  local_dir: deploy
+  wait-until-deployed: true
+  on:
+    repo: songintae/kooboot2
+    branch: master
+
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: kooboot-deploy
+  key: kooboot.zip
+  bundle_type: zip
+  application: kooboot-deploy-agent
+  deployment-group: kooboot-deploy-group
+  region: ap-northeast-2
+    on:
+    repo: songintae/kooboot2
+    branch: master
+
+notifications:
+  email:
+    recipients:
+      - kookooku92@gmail.com
+    on_success: never
+    on_failure: always
