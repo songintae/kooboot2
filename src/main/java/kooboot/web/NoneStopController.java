@@ -11,10 +11,15 @@ import java.util.Arrays;
 public class NoneStopController {
 
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     @GetMapping("/profile")
     public String profile() {
         return Arrays.asList(environment.getActiveProfiles()).stream().findFirst().orElse("");
+    }
+
+    @GetMapping("/health")
+    public String health() {
+        return "UP";
     }
 }
