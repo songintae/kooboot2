@@ -6,10 +6,6 @@ spring:
     livereload:
       enabled: true
 
-logging:
-  config: classpath:logback-${spring.profiles.active}.xml
-
-
 ---
 spring:
   profiles: dev
@@ -32,26 +28,4 @@ logging:
     - debug
     - type.descriptor.sql.BasicBinder: TRACE
 
----
-spring:
-  profiles: prod
-
-  flyway: false
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
-logging:
-  level:
-    org.hibernate:
-    - error
-
+  config: classpath:logback-dev.xml
