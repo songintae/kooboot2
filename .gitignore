@@ -12,6 +12,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/.name
+.idea/vcs.xml
 .idea/compiler.xml
 
 # Generated files
