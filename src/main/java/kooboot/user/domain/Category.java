@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public enum Category {
 
+    EXCEED(-1),
     INIT(0),
     SEARCH(1),
     TRANSLATE(2);
