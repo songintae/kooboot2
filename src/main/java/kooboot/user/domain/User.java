@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static kooboot.process.FlowProcessor.MAXIMUM_REQ_INTERVAL_TIME;
 
@@ -29,6 +30,10 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @OneToMany
+    @JoinColumn(name = "USER_DATA_ID")
+    private List<UserData> userDataList;
 
     public static User valueOf(RequestMessage requestMessage) {
         return User.builder()

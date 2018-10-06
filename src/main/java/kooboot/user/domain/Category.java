@@ -5,24 +5,23 @@ import java.util.Arrays;
 
 public enum Category {
 
-    EXCEED(-1),
-    INIT(0),
-    SEARCH(1),
-    TRANSLATE(2);
+    INIT("초기상태"),
+    SEARCH("검색"),
+    TRANSLATE("번역");
 
 
-    private long code;
+    private String code;
 
-    Category(long code) {
+    Category(String code) {
         this.code = code;
     }
 
 
-    public static Category valueOf(long value) {
+    public static Category of(String value) {
         return Arrays.stream(values()).filter(category -> category.getCode() == value).findFirst().orElseThrow(IllegalArgumentException::new);
     }
 
-    public long getCode() {
+    public String getCode() {
         return this.code;
     }
 }

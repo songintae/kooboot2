@@ -16,8 +16,4 @@ public class UserData {
 
     private String type;
     private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
 }
