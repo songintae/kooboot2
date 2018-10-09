@@ -37,8 +37,4 @@ public abstract class Category {
         }
     }
 
-    public static Category valueOf(String value) {
-        return valueOf(CategoryType.of(value));
-    }
-
 }
