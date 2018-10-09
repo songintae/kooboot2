@@ -2,7 +2,6 @@ package kooboot.web;
 
 
 import kooboot.message.domain.Keyboard;
-import kooboot.message.domain.Message;
 import kooboot.message.domain.RequestMessage;
 import kooboot.message.domain.ResponseMessage;
 import kooboot.process.FlowProcessor;

@@ -4,7 +4,6 @@ import kooboot.message.domain.RequestMessage;
 import kooboot.message.domain.ResponseMessage;
 import kooboot.user.domain.Category;
 import kooboot.user.domain.CategoryType;
-import kooboot.user.domain.ExceedCategory;
 import kooboot.user.domain.User;
 import kooboot.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

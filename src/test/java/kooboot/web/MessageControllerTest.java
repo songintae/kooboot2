@@ -11,13 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 public class MessageControllerTest extends SpringTest {
+
+    private RequestMessage requestMessage;
 
     @Autowired
     private TestRestTemplate template;
-    private RequestMessage requestMessage;
-
 
     @Before
     public void setUp() throws Exception {

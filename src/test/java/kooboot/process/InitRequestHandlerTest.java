@@ -30,7 +30,7 @@ public class InitRequestHandlerTest extends SpringTest {
                 .build();
         ResponseMessage responseMessage =  initRequestHandler.handle(user);
         assertThat(responseMessage.getKeyboard()).isEqualTo(Keyboard.DEFAULT_KEYBOARD);
-        assertThat(responseMessage.getKeyboard()).isEqualTo(InitRequestHandler.DEFAULT_MESSAGE);
+        assertThat(responseMessage.getMessage().getText()).isEqualTo(InitRequestHandler.DEFAULT_MESSAGE);
 
     }
 }
