@@ -9,8 +9,11 @@ import java.util.List;
 @Getter
 @Setter
 public class Keyboard {
+    public static final Keyboard DEFAULT_KEYBOARD = new Keyboard()
+            .addButton("번역")
+            .addButton("검색");
 
-    private static final String DEFAULT_TYPE = "text";
+    private static final String DEFAULT_TYPE = "buttons";
     private String type = DEFAULT_TYPE;
     private List<String> buttons = new ArrayList<>();
 
