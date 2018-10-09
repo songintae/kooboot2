@@ -1,27 +1,44 @@
 package kooboot.user.domain;
 
 
-import java.util.Arrays;
+import kooboot.process.InvalidRequestException;
+import lombok.Getter;
+import lombok.Setter;
 
-public enum Category {
+import javax.persistence.*;
 
-    INIT("초기상태"),
-    SEARCH("검색"),
-    TRANSLATE("번역");
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
+public abstract class Category {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CATEGORY_ID")
+    protected Long id;
+
+    @Getter
+    @Setter
+    @Enumerated(EnumType.STRING)
+    protected CategoryType categoryType = CategoryType.INIT;
 
 
-    private String code;
-
-    Category(String code) {
-        this.code = code;
+    public static Category valueOf(CategoryType categoryType) {
+        switch (categoryType) {
+            case INIT:
+                return new InitCategory();
+            case EXCEED:
+                return new ExceedCategory();
+            case TRANSLATE:
+                return new TranslateCategory();
+            case SEARCH:
+                return new SearchCategory();
+            default:
+                throw new InvalidRequestException();
+        }
     }
 
-
-    public static Category of(String value) {
-        return Arrays.stream(values()).filter(category -> category.getCode() == value).findFirst().orElseThrow(IllegalArgumentException::new);
+    public static Category valueOf(String value) {
+        return valueOf(CategoryType.of(value));
     }
 
-    public String getCode() {
-        return this.code;
-    }
 }

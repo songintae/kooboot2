@@ -2,8 +2,10 @@ package kooboot.user.domain;
 
 
 import kooboot.message.domain.RequestMessage;
+import kooboot.process.InvalidRequestException;
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -13,6 +15,7 @@ import java.util.List;
 import static kooboot.process.FlowProcessor.MAXIMUM_REQ_INTERVAL_TIME;
 
 @Data
+@Slf4j
 @Builder
 @Entity
 @Table(name = "USER")
@@ -28,7 +31,8 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastRequestTime;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CATEGORY_ID")
     private Category category;
 
     @OneToMany
@@ -38,7 +42,7 @@ public class User {
     public static User valueOf(RequestMessage requestMessage) {
         return User.builder()
                 .userKey(requestMessage.getUser_key())
-                .category(Category.INIT)
+                .category(new InitCategory())
                 .build();
     }
 
@@ -52,5 +56,22 @@ public class User {
 
     public void renewalLastRequestTime() {
         this.lastRequestTime = new Date();
+    }
+
+    public void renewalCategory(RequestMessage requestMessage) {
+        if (CategoryType.INIT.getCode().equals(requestMessage.getContent())) {
+            this.category = Category.valueOf(requestMessage.getContent());
+            return;
+        }
+
+        if(!(this.category instanceof InitCategory))
+            return;
+        try {
+            this.category =  Category.valueOf(requestMessage.getContent());
+        }catch(IllegalArgumentException e) {
+            throw new InvalidRequestException();
+        }
+
+
     }
 }

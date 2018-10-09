@@ -1,12 +1,16 @@
 package kooboot.process;
 
-import kooboot.message.domain.Message;
 import kooboot.message.domain.RequestMessage;
 import kooboot.message.domain.ResponseMessage;
+import kooboot.user.domain.Category;
+import kooboot.user.domain.CategoryType;
+import kooboot.user.domain.ExceedCategory;
 import kooboot.user.domain.User;
 import kooboot.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 
 @Component
@@ -17,33 +21,28 @@ public class FlowProcessor {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Map<String, RequestHandler> requestHandlerMap;
+
     User preHandle(RequestMessage requestMessage) {
         User user = userService.findByRequestMessage(requestMessage);
         user.renewalLastRequestTime();
-
-//        if(user.isExceededRequestTime())
-
+        user.renewalCategory(requestMessage);
+        if (user.isExceededRequestTime())
+            user.setCategory(Category.valueOf(CategoryType.EXCEED));
         return user;
     }
 
     public ResponseMessage process(RequestMessage requestMessage) {
-        User user = preHandle(requestMessage);
-        try{
-            return ResponseMessage.builder()
-                    .message(Message.builder()
-                            .text("테스트 메시지 전송")
-                            .build())
-                    .build();
-        }catch(Exception e){
-            return ResponseMessage.builder()
-                    .message(Message.builder()
-                            .text("테스트 메시지 전송")
-                            .build())
-                    .build();
-        }finally {
+        User user = null;
+        try {
+            user = preHandle(requestMessage);
+            return  getRequestHandler(user.getCategory()).handle(user);
+        } catch (InvalidRequestException e) {
+            return e.getResponseMessage();
+        } finally {
             postHandle(user);
         }
-
     }
 
     User postHandle(User user) {
@@ -51,6 +50,16 @@ public class FlowProcessor {
     }
 
 
+    RequestHandler getRequestHandler(Category category) {
+        switch (category.getCategoryType()) {
+            case EXCEED:
+                return requestHandlerMap.get("exceedRequestTimeHandler");
+            case INIT:
+                return requestHandlerMap.get("initRequestHandler");
+            default:
+                throw new InvalidRequestException();
+        }
+    }
 
 
 }

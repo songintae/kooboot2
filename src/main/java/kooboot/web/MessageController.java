@@ -19,9 +19,7 @@ public class MessageController {
     private FlowProcessor flowProcessor;
     @GetMapping("/keyboard")
     public Keyboard keyboard() {
-        return new Keyboard()
-                .addButton("번역")
-                .addButton("검색");
+        return Keyboard.DEFAULT_KEYBOARD;
     }
 
     @PostMapping("/message")
