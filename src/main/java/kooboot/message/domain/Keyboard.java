@@ -1,5 +1,6 @@
 package kooboot.message.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Keyboard {
     public static final Keyboard DEFAULT_KEYBOARD = new Keyboard()
             .addButton("번역")

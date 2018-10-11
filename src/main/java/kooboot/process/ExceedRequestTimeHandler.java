@@ -17,7 +17,7 @@ public class ExceedRequestTimeHandler implements RequestHandler {
 
     @Override
     public ResponseMessage handle(User user) {
-        user.setCategory(Category.valueOf(CategoryType.INIT));
+        user.setCategoryType(CategoryType.INIT);
         Message message = Message.builder().text(DEFAULT_MESSAGE).build();
         return  ResponseMessage.builder()
                 .message(message)

@@ -28,7 +28,7 @@ public class FlowProcessor {
         user.renewalLastRequestTime();
         user.renewalCategory(requestMessage);
         if (user.isExceededRequestTime())
-            user.setCategory(Category.valueOf(CategoryType.EXCEED));
+            user.setCategoryType(CategoryType.EXCEED);
         return user;
     }
 

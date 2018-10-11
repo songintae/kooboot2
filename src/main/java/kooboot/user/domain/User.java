@@ -46,6 +46,10 @@ public class User {
                 .build();
     }
 
+    public void setCategoryType(CategoryType categoryType) {
+        this.category.setCategoryType(categoryType);
+    }
+
     public boolean isExceededRequestTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -MAXIMUM_REQ_INTERVAL_TIME);
@@ -60,14 +64,15 @@ public class User {
 
     public void renewalCategory(RequestMessage requestMessage) {
         if (CategoryType.INIT.getCode().equals(requestMessage.getContent())) {
-            this.category = Category.valueOf(requestMessage.getContent());
+            this.setCategoryType(CategoryType.of(requestMessage.getContent()));
             return;
         }
 
         if(!(this.category instanceof InitCategory))
             return;
+
         try {
-            this.category =  Category.valueOf(requestMessage.getContent());
+            this.setCategoryType(CategoryType.of(requestMessage.getContent()));
         }catch(IllegalArgumentException e) {
             throw new InvalidRequestException();
         }
